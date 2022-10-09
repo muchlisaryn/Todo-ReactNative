@@ -1,13 +1,20 @@
 import { View, Text, Button, StyleSheet } from "react-native";
 
-export default function Task (props) {
+export default function Task ({text, setTodo, todos, todo}) {
+
+    const deleteTodo = (todo) => {
+        let newTodo = todos.filter((e) => e.id !== todo.id)
+        setTodo(newTodo)
+        alert('berhasil')
+    }
+
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <Text>{props.text}</Text>
+                <Text>{text}</Text>
             </View>
             <View style={styles.itemRight}>
-                <Button title='Delete' />
+                <Button title='Delete' onPress={() => deleteTodo(todo)} />
             </View>
         </View>
     )

@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, TextInput, Button, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, View, TextInput, Button, Text, ScrollView } from 'react-native';
 import Task from './componenet/Task';
+import makeId from './componenet/MakeId';
 
 export default function App() {
 
@@ -9,9 +10,13 @@ export default function App() {
   const [todos, setTodo] = useState([])
 
   const onPress = (() => {
-    setTodo([...todos, { todo : value, status: false}])
-    alert("succes")
-    setValue("")
+    if (value !== "" ){
+      setTodo([...todos, { id: makeId(5), todo : value, status: false}])
+      alert("succes")
+      setValue("")
+    } else {
+      alert('form wajib diisi')
+    }
   })
 
   const onChange = (e) => {
@@ -23,15 +28,15 @@ export default function App() {
   return (
     <View style={styles.container} >
         <SafeAreaView >
-          <Text style={styles.title}>TODO LIST</Text>
-          <TextInput onChangeText={onChange} value={value} style={styles.input} />
-          <Button title='submit' onPress={onPress}/>
-          <StatusBar style="auto" />
+          <ScrollView style={styles.scroll}>
+            <Text style={styles.title}>TODO LIST</Text>
+            <TextInput onChangeText={onChange} value={value} style={styles.input} />
+            <Button title='submit' onPress={onPress}/>
+            <StatusBar style="auto" />
             <View style={styles.task}>
-              {todos?.map((e) => <Task text={e.todo}/>)}
-              {/* <Task text={"one"}/>
-              <Task text={"two"}/> */}
+                {todos?.map((e) => <Task text={e.todo} setTodo={setTodo} todo={e} todos={todos}/>)}
             </View>
+          </ScrollView>
         </SafeAreaView>
       
     </View>
@@ -59,5 +64,8 @@ const styles = StyleSheet.create({
   task : {
     marginTop: 10,
     color: "black",
+  },
+  scroll: {
+    marginTop: 200,
   }
 });
